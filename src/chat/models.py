@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.translation import gettext_lazy
 import operator
 from functools import reduce
@@ -55,6 +56,17 @@ class Room(models.Model):
             return self.host == user
         except Exception:
             return False
+
+class Config(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='configs')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='configs')
+    order = models.IntegerField(gettext_lazy('Order'), validators=[MinValueValidator(1)], default=1)
+    offset = models.IntegerField(gettext_lazy('Offset'), validators=[MinValueValidator(0), MaxValueValidator(10)], default=0)
+
+    def __str__(self):
+        return self.__unicode__()
+    def __unicode__(self):
+        return str(self.owner)
 
 class MessageManager(models.Manager):
     def ordering(self, order='created_at'):

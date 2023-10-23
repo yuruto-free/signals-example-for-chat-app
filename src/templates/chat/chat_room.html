@@ -24,6 +24,14 @@
         </div>
     </div>
 </div>
+<div class="row justify-content-left mt-3">
+    {% for conf in room.configs.all|dictsort:"order" %}
+    <div class="col-6">
+        <span>{{ conf.owner|stringformat:"s" }}</span>
+        <span>(order: {{ conf.order }}, offset: {{ conf.offset }})</span>
+    </div>
+    {% endfor %}
+</div>
 <div class="row justify-content-center mt-3">
     <div class="col-12">
         <div id="chat-log">
