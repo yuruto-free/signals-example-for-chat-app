@@ -9,4 +9,5 @@ urlpatterns = [
     path('update/room/<int:pk>', views.UpdateRoom.as_view(), name='update_room'),
     path('delete/room/<int:pk>', views.DeleteRoom.as_view(), name='delete_room'),
     path('enter/room/<int:pk>', views.EnterRoom.as_view(), name='enter_room'),
+    path('update/config/<int:pk>', views.UpdateConfig.as_view(), name='update_config'),
 ]

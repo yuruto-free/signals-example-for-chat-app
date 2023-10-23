@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load chat_utils %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12">
+    <form method="POST">
+      {% csrf_token %}
+
+      {% if form.non_form_erros %}
+      <div class="mb-2 d-flex flex-column justify-content-left">
+        {% for error in form.non_form_errors %}
+        <div class="text-danger">
+          <label>Error:</label><span>{{ error }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {{ form.management_form }}
+      <div class="row">
+        <div class="col-12">
+          {% for item in form %}
+            <div class="row mt-2">
+              <div class="col-12">
+                <label for="{{ item.owner.id_for_label }}" class="form-label">
+                  {% with owner=item.owner|conv_fkey2user %}
+                      <u>{{ item.owner.label }}: <span>{{ owner|stringformat:"s" }}</span></u>
+                  {% endwith %}
+                </label>
+                {{ item.owner }}
+              </div>
+            </div>
+            <div class="row">
+              {% include 'custom_form.html' with field=item.order className="col-6" %}
+              {% include 'custom_form.html' with field=item.offset className="col-6" %}
+              <div>
+                {{ item.id }}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <hr />
+        </div>
+      </div>
+      <div class="row mt-2">
+          <div class="col-6">
+              <button type="submit" class="btn btn-primary btn-block">Register/Update</button>
+          </div>
+          <div class="col-6">
+              <a href="{% url 'chat:index' %}" class="btn btn-secondary btn-block">Cancel</a>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

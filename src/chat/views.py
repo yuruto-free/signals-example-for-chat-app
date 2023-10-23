@@ -67,3 +67,26 @@ class EnterRoom(LoginRequiredMixin, OnlyAssignedUserMixin, DetailView):
     model = models.Room
     template_name = 'chat/chat_room.html'
     context_object_name = 'room'
+
+class UpdateConfig(LoginRequiredMixin, OnlyRoomHostMixin, UpdateView):
+    raise_exception = True
+    model = models.Room
+    form_class = forms.ConfigFormSet
+    template_name = 'chat/config_form.html'
+    context_object_name = 'room' # Do not use this object in this template
+    success_url = reverse_lazy('chat:index')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['queryset'] = kwargs['instance'].configs.all().order_by('order')
+        del kwargs['instance']
+
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.success_url

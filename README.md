@@ -26,7 +26,8 @@
     ```bash
     cd src
     # migrate
-    pipenv run python3 manage.py makemigrations
+    pipenv run python3 manage.py makemigrations accounts
+    pipenv run python3 manage.py makemigrations chat
     pipenv run python3 manage.py migrate
     # create superuser account
     pipenv run python3 manage.py createsuperuser --noinput
@@ -37,5 +38,5 @@ Execute the following command, then access the `http://localhost:8000`.
 
 ```bash
 cd src
-pipenv run daphne -b 0.0.0.0 -p 8000 config.asgi:application
+pipenv run python manage.py runserver 0.0.0.0:8000
 ```
