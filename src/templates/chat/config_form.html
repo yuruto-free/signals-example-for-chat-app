@@ -7,7 +7,7 @@
     <form method="POST">
       {% csrf_token %}
 
-      {% if form.non_form_erros %}
+      {% if form.non_form_errors %}
       <div class="mb-2 d-flex flex-column justify-content-left">
         {% for error in form.non_form_errors %}
         <div class="text-danger">
